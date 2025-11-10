@@ -1,6 +1,5 @@
 package com.ecotrack.plant_service.controller;
 
-
 import com.ecotrack.plant_service.entity.Plant;
 import com.ecotrack.plant_service.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ public class PlantController {
         this.plantService = plantService;
     }
 
+    // ENDPOINTS EXISTANTS
     @GetMapping
     public List<Plant> getAllPlants() {
         return plantService.getAllPlants();
@@ -62,5 +62,21 @@ public class PlantController {
     @GetMapping("/hello")
     public ResponseEntity<?> hello() {
         return ResponseEntity.ok(Map.of("message", "Hello from Plant Service!"));
+    }
+
+    // NOUVEAUX ENDPOINTS AVEC COMMUNICATION FEIGN
+    @GetMapping("/with-users")
+    public List<Map<String, Object>> getAllPlantsWithUserInfo() {
+        return plantService.getAllPlantsWithUserInfo();
+    }
+
+    @GetMapping("/{id}/with-user")
+    public ResponseEntity<Map<String, Object>> getPlantWithUserInfo(@PathVariable Long id) {
+        try {
+            Map<String, Object> plantWithUser = plantService.getPlantWithUserInfo(id);
+            return ResponseEntity.ok(plantWithUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
