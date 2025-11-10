@@ -1,13 +1,18 @@
 package com.ecotrack.notification_service.repository;
 
-
-
 import com.ecotrack.notification_service.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.time.LocalDateTime;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findBySentFalseAndScheduledDateBefore(LocalDateTime date);
+
+    // ✅ AJOUTEZ CETTE MÉTHODE
     List<Notification> findByUserId(Long userId);
+
+    // ✅ ET CES MÉTHODES POUR LE SCHEDULER
+    List<Notification> findBySentFalseAndScheduledDateBefore(java.time.LocalDateTime date);
+    long countByUserId(Long userId);
+
 }
